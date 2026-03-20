@@ -1,15 +1,20 @@
-#include <iostream>
-using namespace std;
+//COMSC-210 | Doubly Linked List | Akashdeep Singh
+#include <iostream> // This statement allows cout, cin, and other standard I/O operations to be used
+using namespace std; // this allows the use of cout and string without having to write down std:: 
 
+//Below this comment, is the constants used for random # generation
 const int MIN_NR = 10, MAX_NR = 99, MIN_LS = 5, MAX_LS = 20;
 
-class DoublyLinkedList {
-private:
-    struct Node {
-        int data;
-        Node* prev;
-        Node* next;
-        Node(int val, Node* p = nullptr, Node* n = nullptr) {
+class DoublyLinkedList { // this line, begins the class that implements the list
+private:    // this just marks internal members that are not accessible outside the class
+    //Below, node structure which represents one element in the list 
+    struct Node {   // this line just defines the node structure
+        int data;   // the actual value that is stored in the node
+        Node* prev; // pointer to the previous node
+        Node* next; //pointer to the next node 
+        
+        // constructor intializes node values
+        Node(int val, Node* p = nullptr, Node* n = nullptr) { 
             data = val; 
             prev = p;
             next = n;

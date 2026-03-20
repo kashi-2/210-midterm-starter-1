@@ -1,5 +1,7 @@
 //COMSC-210 | Doubly Linked List | Akashdeep Singh
 #include <iostream> // This statement allows cout, cin, and other standard I/O operations to be used
+#include <cstdlib>  //this allows the use of rand(), srand()
+#include <ctime>    //this allows the use of time() for random seed 
 using namespace std; // this allows the use of cout and string without having to write down std:: 
 
 //Below this comment, is the constants used for random # generation
@@ -59,26 +61,26 @@ public: // this line marks functions accessible outside the class
     } //ends insert_after()
 
     void delete_val(int value) {  // delete node by value 
-        if (!head) return;   // empty list
+        if (!head) return;   // if empty list than nothing to delete
 
-        Node* temp = head; // start searching from head
+        Node* temp = head; // start searching from head aka the beggining 
         
         while (temp && temp->data != value)   //search for node with matching value 
-            temp = temp->next;
+            temp = temp->next; //move forward until match or end of list 
 
         if (!temp) return; // value not found 
 
         if (temp->prev) // fix previous node
-            temp->prev->next = temp->next;
+            temp->prev->next = temp->next; // if not head previous node skips over temp
         else
-            head = temp->next; //deleting head
+            head = temp->next; //if deleting head move head forward
 
         if (temp->next) //fix next node 
-            temp->next->prev = temp->prev;
+            temp->next->prev = temp->prev; // if not tail, than next node wil skip back over temp
         else
-            tail = temp->prev; //deleting tail
+            tail = temp->prev; //if deleting tail than move tail backward
 
-        delete temp;    // free memory
+        delete temp;    // free memory of removed node 
     }
 
     //this entire portion below jsut deletes node by posiition (1-based index)
@@ -90,11 +92,11 @@ public: // this line marks functions accessible outside the class
     
         //deleting first node
         if (pos == 1) {
-            pop_front();
+            pop_front();    // reuse function to delete first node
             return;
         }
     
-        Node* temp = head;
+        Node* temp = head;  //start at head
     
         //move to desired position
         for (int i = 1; i < pos; i++){
@@ -103,7 +105,7 @@ public: // this line marks functions accessible outside the class
                 return;
             }
             else
-                temp = temp->next;
+                temp = temp->next;  // move forward one node each loop
         }
         if (!temp) {
             cout << "Position doesn't exist." << endl;
@@ -112,25 +114,25 @@ public: // this line marks functions accessible outside the class
     
         //deleting last node 
         if (!temp->next) {
-            pop_back();
+            pop_back(); // reuse fucntion for last node
             return;
         }
     
         //reconnect neighbors around temp
-        Node* tempPrev = temp->prev;
-        tempPrev->next = temp->next;
-        temp->next->prev = tempPrev;
-        delete temp;
+        Node* tempPrev = temp->prev;    //store pointer to node before temp
+        tempPrev->next = temp->next;    //skip temp going forward
+        temp->next->prev = tempPrev;    // skip temp going backward
+        delete temp;                    //free memory
     }
 
     // add node to the end of the list 
     void push_back(int v) {
-        Node* newNode = new Node(v);
-        if (!tail)  //empty list 
-            head = tail = newNode;
+        Node* newNode = new Node(v); // allocate new node
+        if (!tail)  // if empty list 
+            head = tail = newNode;  // both pointers point to new node 
         else {
-            tail->next = newNode;   //old tail points forward
-            newNode->prev = tail;   // new node points back
+            tail->next = newNode;   //old tail points forward to new node 
+            newNode->prev = tail;   // new node points backward to old tail
             tail = newNode; // update tail pointer 
         }
     }
@@ -141,9 +143,9 @@ public: // this line marks functions accessible outside the class
         if (!head)
             head = tail = newNode;
         else {
-            newNode->next = head;   //new node points forward
-            head->prev = newNode;   // old head points back
-            head = newNode; // update head
+            newNode->next = head;   //new node points to old head
+            head->prev = newNode;   // old head points back to new node 
+            head = newNode; // update head pointer 
         }
     }
     
@@ -155,14 +157,14 @@ public: // this line marks functions accessible outside the class
             return;
         }
 
-        Node * temp = head; //store current head
+        Node * temp = head; //store node to delete
 
         if (head->next) {
             head = head->next;  //move head forward
             head->prev = nullptr;   // new head has no previous 
         }
         else
-            head = tail = nullptr;  //only one node 
+            head = tail = nullptr;  //list had only one node
         delete temp;
     }
 
@@ -186,33 +188,33 @@ public: // this line marks functions accessible outside the class
     // New method: prints every other element 
     void every_other_element() {
         
-        Node* current = head;
+        Node* current = head;   //start at first node 
 
         if (!current) {
             cout << "List is empty." << endl;
             return;
         }
 
-        bool printFlag = true;
+        bool printFlag = true;  // controls printing vs skipping 
 
         while (current) {
 
             if (printFlag)
-                cout << current->data << " ";
+                cout << current->data << " ";   // print current nodes data
 
-            printFlag = !printFlag; //flip true/false
+            printFlag = !printFlag; //flip true/false each loop
 
-            current = current->next;
+            current = current->next;    // move forward
         }
         cout << endl;
     }
 
     //destructor that deletes entire list 
     ~DoublyLinkedList() {
-        while (head) {
-            Node* temp = head;
-            head = head->next;
-            delete temp;
+        while (head) {  //loop until list is empty
+            Node* temp = head;  // store current node 
+            head = head->next;  // move head forward
+            delete temp;    // delete old node
         }
     }
     //print forward
@@ -246,15 +248,15 @@ public: // this line marks functions accessible outside the class
 
 int main() {
     
-    srand(time(0)); 
+    srand(time(0)); // seed random generator using time
 
-    DoublyLinkedList list;
+    DoublyLinkedList list;  //create empty list object
 
-    int size = rand() % (MAX_LS - MIN_LS + 1) + MIN_LS;
+    int size = rand() % (MAX_LS - MIN_LS + 1) + MIN_LS; // random size between 5 and 20
 
     // populates list with random values
     for (int i = 0; i < size; i++)
-        list.push_back(rand() % (MAX_NR - MIN_NR + 1) + MIN_NR);
+        list.push_back(rand() % (MAX_NR - MIN_NR + 1) + MIN_NR);    //inserts random #'s into list
 
     cout << "Forward:\n";
     list.print();
@@ -264,6 +266,6 @@ int main() {
 
     cout << "\nEvery other element:\n";
     list.every_other_element();
-    
+
     return 0;
 }

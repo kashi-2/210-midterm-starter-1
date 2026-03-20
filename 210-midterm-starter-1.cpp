@@ -14,44 +14,44 @@ private:    // this just marks internal members that are not accessible outside 
         Node* next; //pointer to the next node 
         
         // constructor intializes node values
-        Node(int val, Node* p = nullptr, Node* n = nullptr) { 
-            data = val; 
-            prev = p;
-            next = n;
+        Node(int val, Node* p = nullptr, Node* n = nullptr) { //constructor with default pointer values
+            data = val; // stores the value in the node 
+            prev = p; //sets up previous pointer 
+            next = n; // sets up next pointer 
+        }   // this ends the constructor 
+    };  //this ends the node struct 
+
+    Node* head; // Pointer to first node in the list 
+    Node* tail; // Pointer to last node in the list 
+
+public: // this line marks functions accessible outside the class 
+    DoublyLinkedList() { head = nullptr; tail = nullptr; }  // this is where the constructor starts, it intializes the empty list, head = nullptr; (this jsut means no first node yet) while the tail version just means no last node yet
+
+    void insert_after(int value, int position) { //inserts after a given position
+        if (position < 0) {     //if the position is less than 0 it will output to the user "Position must be >=0."
+            cout << "Position must be >= 0." << endl; // prints the error message
+            return; //stops function
+        } // ends invalid check
+
+        Node* newNode = new Node(value); // creates a new node with the given value 
+        if (!head) {    // chekcs if list is empty
+            head = tail = newNode;  // new node becomes both head and tail
+            return; // this just means the insertion is complete
+        } // ends empty list case 
+
+        Node* temp = head; // temp pointer starts at head 
+        for (int i = 0; i < position && temp; ++i) //move temp forward position times
+            temp = temp->next;  // advances pointer 
+
+        if (!temp) { //checks if position is out of range
+            cout << "Position exceeds list size. Node not inserted.\n"; //prints error message everything thats in the " "
+            delete newNode; // this just is there to prevent memory leak
+            return; // stops function
         }
-    };
 
-    Node* head;
-    Node* tail;
-
-public:
-    DoublyLinkedList() { head = nullptr; tail = nullptr; }
-
-    void insert_after(int value, int position) {
-        if (position < 0) {
-            cout << "Position must be >= 0." << endl;
-            return;
-        }
-
-        Node* newNode = new Node(value);
-        if (!head) {
-            head = tail = newNode;
-            return;
-        }
-
-        Node* temp = head;
-        for (int i = 0; i < position && temp; ++i)
-            temp = temp->next;
-
-        if (!temp) {
-            cout << "Position exceeds list size. Node not inserted.\n";
-            delete newNode;
-            return;
-        }
-
-        newNode->next = temp->next;
-        newNode->prev = temp;
-        if (temp->next)
+        newNode->next = temp->next; // new node points to node after temp
+        newNode->prev = temp;   // new node points back to temp
+        if (temp->next) 
             temp->next->prev = newNode;
         else
             tail = newNode;

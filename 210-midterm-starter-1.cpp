@@ -86,7 +86,7 @@ public: // this line marks functions accessible outside the class
     //this entire portion below jsut deletes node by posiition (1-based index)
     void delete_pos(int pos) { 
         if (!head) {
-            cout << "List is empty." << endl;
+            cout << "List is empty." << endl;   //cant delete from empty list 
             return;
         }
     
@@ -100,7 +100,7 @@ public: // this line marks functions accessible outside the class
     
         //move to desired position
         for (int i = 1; i < pos; i++){
-            if (!temp) {
+            if (!temp) {    //ran past end of list
                 cout << "Position doesn't exist." << endl;
                 return;
             }
@@ -153,11 +153,11 @@ public: // this line marks functions accessible outside the class
     void pop_front() {
 
         if (!head) {
-            cout << "List is empty." << endl;
+            cout << "List is empty." << endl;   // nothing to remove
             return;
         }
 
-        Node * temp = head; //store node to delete
+        Node * temp = head; //store node to delete (stores current head)
 
         if (head->next) {
             head = head->next;  //move head forward
@@ -171,7 +171,7 @@ public: // this line marks functions accessible outside the class
     // removes last node 
     void pop_back() {
         if (!tail) {
-            cout << "List is empty." << endl;
+            cout << "List is empty." << endl;   // nothing to remove 
             return;
         }
         Node * temp = tail;
@@ -219,36 +219,36 @@ public: // this line marks functions accessible outside the class
     }
     //print forward
     void print() {
-        Node* current = head;
+        Node* current = head;   //start at first node 
         if (!current) {
-            cout << "List is empty." << endl;
+            cout << "List is empty." << endl;   //nothing ot print 
             return;
         }
         while (current) {
-            cout << current->data << " ";
-            current = current->next;
+            cout << current->data << " ";   // print node value
+            current = current->next;    //move forward
         }
-        cout << endl;
+        cout << endl;   // end line
     }
 
     //print backward
     void print_reverse() {
-        Node* current = tail;
+        Node* current = tail;   //start at last node 
         if (!current) { 
-            cout << "List is empty." << endl;
+            cout << "List is empty." << endl;   //nothing to print
             return;
         }
         while (current) {
-            cout << current->data << " ";
-            current = current->prev;
+            cout << current->data << " ";   //print node value
+            current = current->prev;    // move backward
         }
-        cout << endl;
+        cout << endl;   // end line
     }
 };
 
 int main() {
     
-    srand(time(0)); // seed random generator using time
+    srand(time(0)); // seed random generator with current time
 
     DoublyLinkedList list;  //create empty list object
 
@@ -258,14 +258,14 @@ int main() {
     for (int i = 0; i < size; i++)
         list.push_back(rand() % (MAX_NR - MIN_NR + 1) + MIN_NR);    //inserts random #'s into list
 
-    cout << "Forward:\n";
-    list.print();
+    cout << "Forward:\n";   // label output
+    list.print();   //print list from head to tail 
 
-    cout << "Backward:\n";
-    list.print_reverse();
+    cout << "Backward:\n";  // label output
+    list.print_reverse();   //print list from tail to head
 
-    cout << "\nEvery other element:\n";
-    list.every_other_element();
+    cout << "\nEvery other element:\n"; //label output
+    list.every_other_element(); // print alternating nodes
 
-    return 0;
+    return 0;   // end program
 }

@@ -183,6 +183,31 @@ public: // this line marks functions accessible outside the class
         delete temp;
     }
 
+    // New method: prints every other element 
+    void every_other_element() {
+        
+        Node* current = head;
+
+        if (!current) {
+            cout << "List is empty." << endl;
+            return;
+        }
+
+        bool printFlag = true;
+
+        while (current) {
+
+            if (printFlag)
+                cout << current->data << " ";
+
+            printFlag = !printFlag; //flip true/false
+
+            current = current->next;
+        }
+        cout << endl;
+    }
+
+    //destructor that deletes entire list 
     ~DoublyLinkedList() {
         while (head) {
             Node* temp = head;
@@ -190,6 +215,7 @@ public: // this line marks functions accessible outside the class
             delete temp;
         }
     }
+    //print forward
     void print() {
         Node* current = head;
         if (!current) {
@@ -203,6 +229,7 @@ public: // this line marks functions accessible outside the class
         cout << endl;
     }
 
+    //print backward
     void print_reverse() {
         Node* current = tail;
         if (!current) { 
@@ -218,8 +245,25 @@ public: // this line marks functions accessible outside the class
 };
 
 int main() {
-    cout << MIN_NR + MIN_LS + MAX_NR + MAX_LS;  // dummy statement to avoid compiler warning
+    
+    srand(time(0)); 
 
+    DoublyLinkedList list;
+
+    int size = rand() % (MAX_LS - MIN_LS + 1) + MIN_LS;
+
+    // populates list with random values
+    for (int i = 0; i < size; i++)
+        list.push_back(rand() % (MAX_NR - MIN_NR + 1) + MIN_NR);
+
+    cout << "Forward:\n";
+    list.print();
+
+    cout << "Backward:\n";
+    list.print_reverse();
+
+    cout << "\nEvery other element:\n";
+    list.every_other_element();
     
     return 0;
 }

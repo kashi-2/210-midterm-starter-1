@@ -51,42 +51,44 @@ public: // this line marks functions accessible outside the class
 
         newNode->next = temp->next; // new node points to node after temp
         newNode->prev = temp;   // new node points back to temp
-        if (temp->next) 
-            temp->next->prev = newNode;
-        else
+        if (temp->next) //checks if insering in the middle 
+            temp->next->prev = newNode; //fix next nodes prev pointer 
+        else // otherwise inserting at end 
             tail = newNode;
-        temp->next = newNode;
-    }
+        temp->next = newNode;     // 57 and 58 is basically just updating tail pointer and than links the temp forward to new node 
+    } //ends insert_after()
 
-    void delete_val(int value) {
-        if (!head) return;
+    void delete_val(int value) {  // delete node by value 
+        if (!head) return;   // empty list
 
-        Node* temp = head;
+        Node* temp = head; // start searching from head
         
-        while (temp && temp->data != value)
+        while (temp && temp->data != value)   //search for node with matching value 
             temp = temp->next;
 
-        if (!temp) return; 
+        if (!temp) return; // value not found 
 
-        if (temp->prev)
+        if (temp->prev) // fix previous node
             temp->prev->next = temp->next;
         else
-            head = temp->next; 
+            head = temp->next; //deleting head
 
-        if (temp->next)
+        if (temp->next) //fix next node 
             temp->next->prev = temp->prev;
         else
-            tail = temp->prev; 
+            tail = temp->prev; //deleting tail
 
-        delete temp;
+        delete temp;    // free memory
     }
 
-    void delete_pos(int pos) {
+    //this entire portion below jsut deletes node by posiition (1-based index)
+    void delete_pos(int pos) { 
         if (!head) {
             cout << "List is empty." << endl;
             return;
         }
     
+        //deleting first node
         if (pos == 1) {
             pop_front();
             return;
@@ -94,6 +96,7 @@ public: // this line marks functions accessible outside the class
     
         Node* temp = head;
     
+        //move to desired position
         for (int i = 1; i < pos; i++){
             if (!temp) {
                 cout << "Position doesn't exist." << endl;
@@ -107,39 +110,44 @@ public: // this line marks functions accessible outside the class
             return;
         }
     
+        //deleting last node 
         if (!temp->next) {
             pop_back();
             return;
         }
     
+        //reconnect neighbors around temp
         Node* tempPrev = temp->prev;
         tempPrev->next = temp->next;
         temp->next->prev = tempPrev;
         delete temp;
     }
 
+    // add node to the end of the list 
     void push_back(int v) {
         Node* newNode = new Node(v);
-        if (!tail)
+        if (!tail)  //empty list 
             head = tail = newNode;
         else {
-            tail->next = newNode;
-            newNode->prev = tail;
-            tail = newNode;
+            tail->next = newNode;   //old tail points forward
+            newNode->prev = tail;   // new node points back
+            tail = newNode; // update tail pointer 
         }
     }
     
+    //adds node to front of list 
     void push_front(int v) {
         Node* newNode = new Node(v);
         if (!head)
             head = tail = newNode;
         else {
-            newNode->next = head;
-            head->prev = newNode;
-            head = newNode;
+            newNode->next = head;   //new node points forward
+            head->prev = newNode;   // old head points back
+            head = newNode; // update head
         }
     }
     
+    // remove first node 
     void pop_front() {
 
         if (!head) {
@@ -147,17 +155,18 @@ public: // this line marks functions accessible outside the class
             return;
         }
 
-        Node * temp = head;
+        Node * temp = head; //store current head
 
         if (head->next) {
-            head = head->next;
-            head->prev = nullptr;
+            head = head->next;  //move head forward
+            head->prev = nullptr;   // new head has no previous 
         }
         else
-            head = tail = nullptr;
+            head = tail = nullptr;  //only one node 
         delete temp;
     }
 
+    // removes last node 
     void pop_back() {
         if (!tail) {
             cout << "List is empty." << endl;
@@ -166,8 +175,8 @@ public: // this line marks functions accessible outside the class
         Node * temp = tail;
 
         if (tail->prev) {
-            tail = tail->prev;
-            tail->next = nullptr;
+            tail = tail->prev;  // move tail backward
+            tail->next = nullptr;   // new tail has no next 
         }
         else
             head = tail = nullptr;
